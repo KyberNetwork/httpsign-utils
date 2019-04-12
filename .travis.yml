@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - 1.11.6
+
+env:
+  global:
+    - GOLANGCI_LINT_VERSION=1.15.0
+    - GO111MODULE=on
+    - GOFLAGS=-mod=vendor
+
+install:
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b ${TRAVIS_HOME}/bin v${GOLANGCI_LINT_VERSION}
+
+script:
+  - golangci-lint run --config .golangci.yml
+  - go test -v -race ./...

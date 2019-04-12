@@ -1,0 +1,3 @@
+github.com/kybernetwork/httpsign-utils v0.0.0-20190412062026-935f73d62eab h1:Gt1cEKtZDd2D/HgeYVFSlTE1oPTTsO2lGxHWvVWbBhA=
+github.com/urfave/cli v1.20.0 h1:fDqGv3UG/4jbVl/QkFwEdddtEDjh/5Ov6X+0B/3bPaw=
+github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
