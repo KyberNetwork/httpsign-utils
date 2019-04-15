@@ -7,7 +7,7 @@ import (
 )
 
 // NewAuthenticator create a httpsign.Authenticator to check the message signing is valid or not
-func NewAuthenticator(readKeyID, readKeySecret, writeKeyID, writeKeySecret string) (*httpsign.Authenticator, error) {
+func NewAuthenticator(readKeyID, readKeySecret, writeKeyID, writeKeySecret string) *httpsign.Authenticator {
 	var (
 		secrets      = make(httpsign.Secrets)
 		mapKeySecret = map[string]string{
@@ -34,5 +34,5 @@ func NewAuthenticator(readKeyID, readKeySecret, writeKeyID, writeKeySecret strin
 			[]string{"(request-target)", "nonce", "digest"},
 		),
 	)
-	return auth, nil
+	return auth
 }
