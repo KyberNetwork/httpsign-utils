@@ -11,7 +11,7 @@ import (
 var defaultMaxTimeGap = time.Second * 30
 
 //ErrNonceNotInRange error when nonce not in acceptable range.
-var ErrNonceNotInRange = errors.New("nonce submit is not in aceptable range")
+var ErrNonceNotInRange = errors.New("submitted nonce is not in acceptable range")
 
 // NonceValidator checking validate by time range
 type NonceValidator struct {
