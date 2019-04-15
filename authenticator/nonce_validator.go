@@ -38,9 +38,6 @@ func NewNonceValidator(options ...NonceValidatorOption) *NonceValidator {
 	for _, option := range options {
 		option(v)
 	}
-	if v.MaxTimeGap == 0 {
-		v.MaxTimeGap = defaultMaxTimeGap
-	}
 	return v
 }
 
