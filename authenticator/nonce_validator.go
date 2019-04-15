@@ -52,7 +52,7 @@ func (v *NonceValidator) Validate(r *http.Request) error {
 	}
 
 	clientTime := time.Unix(0, nonce*int64(time.Millisecond))
-	gap := time.Now().Sub(clientTime)
+	gap := time.Since(clientTime)
 	if gap < 0 {
 		gap = -gap
 	}
