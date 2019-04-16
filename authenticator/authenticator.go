@@ -2,15 +2,17 @@ package authenticator
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/gin-contrib/httpsign"
 	"github.com/gin-contrib/httpsign/crypto"
 	"github.com/gin-contrib/httpsign/validator"
 )
 
-// KeyPair includes key and secretKey with format accessKeyID:secretAccessKey
-type KeyPair string
+// KeyPair difine AccessKeyID and SecretAccessKey
+type KeyPair struct {
+	AccessKeyID     string
+	SecretAccessKey string
+}
 
 // NewAuthenticator create a httpsign.Authenticator to check the message signing is valid or not
 func NewAuthenticator(keyPairs ...KeyPair) (*httpsign.Authenticator, error) {
@@ -21,13 +23,9 @@ func NewAuthenticator(keyPairs ...KeyPair) (*httpsign.Authenticator, error) {
 	}
 
 	for _, keyPair := range keyPairs {
-		key, secret, err := ParseKeyPair(keyPair)
-		if err != nil {
-			return nil, err
-		}
-		signKeyID := httpsign.KeyID(key)
+		signKeyID := httpsign.KeyID(keyPair.AccessKeyID)
 		secrets[signKeyID] = &httpsign.Secret{
-			Key:       secret,
+			Key:       keyPair.SecretAccessKey,
 			Algorithm: &crypto.HmacSha512{},
 		}
 	}
@@ -43,23 +41,4 @@ func NewAuthenticator(keyPairs ...KeyPair) (*httpsign.Authenticator, error) {
 		),
 	)
 	return auth, nil
-}
-
-// ParseKeyPair parse keyPair to accessKeyID and secretAccessKey
-func ParseKeyPair(keyPair KeyPair) (accessKeyID string, secretAccessKey string, err error) {
-	kp := string(keyPair)
-	if len(kp) == 0 {
-		return "", "", errors.New("missing access key keyPair")
-	}
-	keys := strings.Split(kp, ":")
-	if len(keys) != 2 {
-		return "", "", errors.New("invalid key pair format")
-	}
-	if len(keys[0]) == 0 {
-		return "", "", errors.New("missing access key id")
-	}
-	if len(keys[1]) == 0 {
-		return "", "", errors.New("missing secret access key")
-	}
-	return keys[0], keys[1], nil
 }

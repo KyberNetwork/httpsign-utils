@@ -13,7 +13,6 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/KyberNetwork/httpsign-utils/authenticator"
 	"github.com/KyberNetwork/httpsign-utils/sign"
 )
 
@@ -43,6 +42,23 @@ func main() {
 	}
 }
 
+func parseKeyPair(keyPair string) (accessKeyID string, secretAccessKey string, err error) {
+	if len(keyPair) == 0 {
+		return "", "", errors.New("missing access key keyPair")
+	}
+	keys := strings.Split(keyPair, ":")
+	if len(keys) != 2 {
+		return "", "", errors.New("invalid key pair format")
+	}
+	if len(keys[0]) == 0 {
+		return "", "", errors.New("missing access key id")
+	}
+	if len(keys[1]) == 0 {
+		return "", "", errors.New("missing secret access key")
+	}
+	return keys[0], keys[1], nil
+}
+
 func run(c *cli.Context) error {
 	var (
 		url     = c.Args().First()
@@ -56,7 +72,7 @@ func run(c *cli.Context) error {
 		return errors.New("missing URL")
 	}
 
-	accessKeyID, secretKeyID, err := authenticator.ParseKeyPair(authenticator.KeyPair(keyPair))
+	accessKeyID, secretKeyID, err := parseKeyPair(keyPair)
 	if err != nil {
 		return err
 	}
